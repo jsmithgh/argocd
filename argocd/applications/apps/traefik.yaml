@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: traefik
-  namespace: default
+  namespace: traefik
 spec:
   replicas: 2
   selector:
@@ -30,10 +30,3 @@ spec:
               containerPort: 443
             - name: admin
               containerPort: 8080
-          volumeMounts:
-            - name: traefik-persistent-storage
-              mountPath: /data
-      volumes:
-        - name: traefik-persistent-storage
-          persistentVolumeClaim:
-            claimName: traefik-data
