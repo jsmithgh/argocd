@@ -3,10 +3,14 @@ kind: StorageClass
 metadata:
   name: longhorn-rwx
 provisioner: driver.longhorn.io
-allowVolumeExpansion: true
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
 parameters:
   numberOfReplicas: "3"
   staleReplicaTimeout: "30"
-  dataEngine: "v2"  # Enables RWX support
+  fromBackup: ""
+  fsType: "nfs"
+  dataLocality: "disabled"
+  recurringJobs: ""
+  diskSelector: ""
+  nodeSelector: ""
+allowVolumeExpansion: true
+reclaimPolicy: Retain

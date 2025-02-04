@@ -21,7 +21,7 @@ spec:
             defaultFsType: ext4
     - repoURL: "https://github.com/jsmithgh/argocd"
       targetRevision: HEAD
-      path: argocd/apps/longhorn
+      path: argocd/apps
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
