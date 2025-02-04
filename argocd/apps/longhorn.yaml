@@ -3,9 +3,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: longhorn
-  namespace: longhorn
+  namespace: argocd  # Adjust to match your ArgoCD namespace
 spec:
-  type: LoadBalancer
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
@@ -13,7 +12,7 @@ spec:
   sources:
     - chart: longhorn
       repoURL: https://charts.longhorn.io/
-      targetRevision: v1.8.0 # Replace with the Longhorn version you'd like to install or upgrade to
+      targetRevision: v1.8.0
       helm:
         values: |
           preUpgradeChecker:
