@@ -20,7 +20,8 @@ spec:
             enabled: true
             storageClass: longhorn
             size: 1Gi
-            accessMode: ReadWriteMany
+            accessModes:
+              - ReadWriteMany
           providers:
             kubernetesCRD:
               enabled: true
