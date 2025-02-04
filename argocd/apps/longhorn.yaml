@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: longhorn
-  namespace: argocd  # Adjust to match your ArgoCD namespace
+  namespace: argocd # Adjust to match your ArgoCD namespace
 spec:
   syncPolicy:
     syncOptions:
@@ -21,7 +21,7 @@ spec:
             defaultFsType: ext4
     - repoURL: "https://github.com/jsmithgh/argocd"
       targetRevision: HEAD
-      path: argocd/apps
+      path: argocd/longhorn
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
