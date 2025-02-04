@@ -1,9 +1,8 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: longhorn
-  namespace: argocd # Adjust to match your ArgoCD namespace
+  namespace: argocd
 spec:
   syncPolicy:
     syncOptions:
@@ -17,8 +16,23 @@ spec:
         values: |
           preUpgradeChecker:
             jobEnabled: false
+          persistence:
             defaultClass: true
             defaultFsType: ext4
+          defaultSettings:
+            createDefaultDiskLabeledNodes: true
+            defaultDataPath: /var/lib/longhorn/
+            defaultReplicaCount: 3
+          storageClasses:
+            - name: longhorn-rwx
+              defaultClass: false
+              reclaimPolicy: Retain
+              allowVolumeExpansion: true
+              parameters:
+                numberOfReplicas: "3"
+                staleReplicaTimeout: "30"
+                fsType: "nfs"
+                dataLocality: "disabled"
     - repoURL: "https://github.com/jsmithgh/argocd"
       targetRevision: HEAD
       path: argocd/apps
