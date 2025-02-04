@@ -13,20 +13,9 @@ spec:
       values: |
         persistence:
           defaultClass: true
-          defaultFsType: ext4
-        defaultSettings:
-          createDefaultDiskLabeledNodes: true
-          defaultDataPath: /var/lib/longhorn/
-          defaultReplicaCount: 3
-      skipCrds: false
-    syncPolicy:
-      syncOptions:
-        - CreateNamespace=true
-        - SkipDryRunOnMissingResource=true
-        - Replace=true
-      automated:
-        prune: true
-        selfHeal: true
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
