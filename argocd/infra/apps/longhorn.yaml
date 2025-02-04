@@ -10,8 +10,23 @@ spec:
     repoURL: https://charts.longhorn.io
     targetRevision: 1.8.0
     helm:
-      valueFiles:
-        - longhorn-values.yaml
+      values: |
+        persistence:
+          defaultClass: true
+          defaultFsType: ext4
+        defaultSettings:
+          createDefaultDiskLabeledNodes: true
+          defaultDataPath: /var/lib/longhorn/
+          defaultReplicaCount: 3
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        guaranteedEngineManagerCPU: 25
+        guaranteedReplicaManagerCPU: 25
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
