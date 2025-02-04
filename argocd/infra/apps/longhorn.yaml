@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: longhorn
-  namespace: longhorn
+  namespace: argocd
 spec:
   type: LoadBalancer
   syncPolicy:
