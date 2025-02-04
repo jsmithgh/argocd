@@ -17,6 +17,11 @@ spec:
         values: |
           preUpgradeChecker:
             jobEnabled: false
+            defaultClass: true
+            defaultFsType: ext4
+    - repoURL: "https://github.com/jsmithgh/argocd"
+      targetRevision: HEAD
+      path: arcocd/apps
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
