@@ -6,9 +6,6 @@ metadata:
   namespace: argocd
 spec:
   type: LoadBalancer
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
   project: default
   sources:
     - chart: longhorn
@@ -21,3 +18,9 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: longhorn-system
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    #automated:
+    #  prune: true
+    #  selfHeal: true
