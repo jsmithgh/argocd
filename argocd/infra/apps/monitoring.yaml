@@ -16,8 +16,8 @@ spec:
           persistence:
             enabled: true
             storageClassName: synology-nfs
+            volumeName: synology-grafana-pv
             size: 10Gi
-            subPath: grafana
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
