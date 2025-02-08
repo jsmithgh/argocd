@@ -1,3 +1,4 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -10,83 +11,11 @@ spec:
     targetRevision: 68.3.2
     chart: kube-prometheus-stack
     helm:
-      values: |
-
-        grafana:
-          persistence:
-            enabled: true
-            storageClassName: synology-nfs
-            size: 10Gi
-            subPath: "grafana"
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                    - key: workload-type/monitoring
-                      operator: In
-                      values:
-                      - "true"
-
-        prometheus:
-          prometheusSpec:
-            storageSpec:
-              volumeClaimTemplate:
-                spec:
-                  storageClassName: synology-nfs
-                  accessModes: ["ReadWriteMany"]
-                  resources:
-                    requests:
-                      storage: 80Gi
-                  volumeName: synology-nfs-pv
-              subPath: "prometheus"
-            retention: 30d
-            affinity:
-              nodeAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  nodeSelectorTerms:
-                  - matchExpressions:
-                    - key: workload-type/monitoring
-                      operator: In
-                      values:
-                      - "true"
-
-        alertmanager:
-          alertmanagerSpec:
-            storage:
-              volumeClaimTemplate:
-                spec:
-                  storageClassName: synology-nfs
-                  accessModes: ["ReadWriteMany"]
-                  resources:
-                    requests:
-                      storage: 10Gi
-                  volumeName: synology-nfs-pv
-              subPath: "alert-manager"
-            affinity:
-              nodeAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  nodeSelectorTerms:
-                  - matchExpressions:
-                    - key: workload-type/monitoring
-                      operator: In
-                      values:
-                      - "true"
-
-        prometheusOperator:
-          admissionWebhooks:
-            enabled: true
-          tlsProxy:
-            enabled: true
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: workload-type/monitoring
-                    operator: In
-                    values:
-                    - "true"
+      values:
+        - "$values/values/grafana.yaml"
+        - "$values/values/prometheus.yaml"
+        - "$values/values/alertmanager.yaml"
+        - "$values/values/operator.yaml"
 
   destination:
     server: https://kubernetes.default.svc
