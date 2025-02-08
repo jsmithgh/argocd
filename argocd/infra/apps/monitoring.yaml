@@ -42,36 +42,36 @@ spec:
           protocol: TCP
 
   prometheus:
-    prometheusSpec:
-      storage:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: synology-nfs
-            accessModes: ["ReadWriteMany"]
-            resources:
-              requests:
-                storage: 80Gi
-            volumeName: synology-nfs-pv
-      volumeMounts:
-        - mountPath: /prometheus
-          subPath: prometheus
-      retention: 30d
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: workload-type/monitoring
-                    operator: In
-                    values:
-                      - "true"
-      service:
-        type: LoadBalancer
-        ports:
-          - name: http
-            port: 9090
-            targetPort: 9090
-            protocol: TCP
+  service:
+    type: LoadBalancer
+    ports:
+      - name: http
+        port: 9090
+        targetPort: 9090
+        protocol: TCP
+  prometheusSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: synology-nfs
+          accessModes: ["ReadWriteMany"]
+          resources:
+            requests:
+              storage: 80Gi
+          volumeName: synology-nfs-pv
+    volumeMounts:
+      - mountPath: /prometheus
+        subPath: prometheus
+    retention: 30d
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: workload-type/monitoring
+                  operator: In
+                  values:
+                    - "true"
 
   alertmanager:
     alertmanagerSpec:
