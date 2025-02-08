@@ -40,6 +40,7 @@ spec:
 
         prometheus:
           prometheusSpec:
+            retention: 30d
             storage:
               volumeClaimTemplate:
                 spec:
@@ -48,7 +49,6 @@ spec:
                   resources:
                     requests:
                       storage: 80Gi
-            retention: 30d
 
             affinity:
               nodeAffinity:
