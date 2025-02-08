@@ -19,7 +19,6 @@ spec:
             accessModes:
               - ReadWriteMany
             size: 10Gi
-            volumeName: synology-grafana-pv
 
           affinity:
             nodeAffinity:
@@ -49,8 +48,8 @@ spec:
                   resources:
                     requests:
                       storage: 80Gi
-                  volumeName: synology-prometheus-pv
             retention: 30d
+
             affinity:
               nodeAffinity:
                 requiredDuringSchedulingIgnoredDuringExecution:
@@ -71,7 +70,7 @@ spec:
                   resources:
                     requests:
                       storage: 10Gi
-                  volumeName: synology-alertmanager-pv
+
             affinity:
               nodeAffinity:
                 requiredDuringSchedulingIgnoredDuringExecution:
