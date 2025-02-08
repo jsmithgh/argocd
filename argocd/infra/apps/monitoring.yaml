@@ -11,11 +11,86 @@ spec:
     targetRevision: 68.3.2
     chart: kube-prometheus-stack
     helm:
-      valueFiles:
-        - "values/grafana.yaml"
-        - "values/prometheus.yaml"
-        - "values/alertmanager.yaml"
-        - "values/operator.yaml"
+      values: |
+        grafana:
+          persistence:
+            enabled: true
+            storageClassName: synology-nfs
+            size: 10Gi
+            subPath: grafana
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: workload-type/monitoring
+                      operator: In
+                      values:
+                      - "true"
+
+        prometheus:
+          prometheusSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: synology-nfs
+                  accessModes: ["ReadWriteMany"]
+                  resources:
+                    requests:
+                      storage: 80Gi
+                  volumeName: synology-nfs-pv
+                  volumeMounts:
+                    - mountPath: /prometheus
+                      subPath: prometheus
+            retention: 30d
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: workload-type/monitoring
+                      operator: In
+                      values:
+                      - "true"
+
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: synology-nfs
+                  accessModes: ["ReadWriteMany"]
+                  resources:
+                    requests:
+                      storage: 10Gi
+                  volumeName: synology-nfs-pv
+                  volumeMounts:
+                    - mountPath: /alertmanager
+                      subPath: alert-manager
+            affinity:
+              nodeAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: workload-type/monitoring
+                      operator: In
+                      values:
+                      - "true"
+
+        prometheusOperator:
+          admissionWebhooks:
+            enabled: true
+          tlsProxy:
+            enabled: true
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: workload-type/monitoring
+                    operator: In
+                    values:
+                    - "true"
 
   destination:
     server: https://kubernetes.default.svc
