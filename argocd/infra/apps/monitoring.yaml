@@ -11,6 +11,12 @@ spec:
     targetRevision: 68.3.2
     chart: kube-prometheus-stack
     helm:
+      skipCrds: true
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jsonPointers:
+        - /metadata/annotations
       values: |
         grafana:
           persistence:
