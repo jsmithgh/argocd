@@ -16,17 +16,29 @@ spec:
           persistence:
             enabled: true
             storageClassName: synology-nfs
-            volumeName: synology-grafana-pv
+            accessModes:
+              - ReadWriteMany
             size: 10Gi
+            volumeName: synology-grafana-pv
+
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                   - matchExpressions:
-                      - key: workload-type/monitoring
+                      - key: kubernetes.io/hostname
                         operator: In
                         values:
-                          - "true"
+                          - k3s-work-04
+                          - k3s-work-08
+                          - k3s-work-12
+                          - k3s-work-16
+
+          tolerations:
+            - key: node-role.kubernetes.io/master
+              operator: Exists
+              effect: NoSchedule
+
           ingress:
             enabled: true
             ingressClassName: traefik
