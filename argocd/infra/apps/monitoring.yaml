@@ -13,6 +13,8 @@ spec:
       skipCrds: true
       values: |
         grafana:
+          service:
+            type: LoadBalancer
           persistence:
             enabled: true
             storageClassName: synology-grafana
