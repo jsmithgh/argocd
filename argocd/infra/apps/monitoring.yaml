@@ -42,6 +42,8 @@ spec:
 
         prometheus:
           prometheusSpec:
+            service:
+            type: LoadBalancer
             retention: 30d
             storageSpec:
               volumeClaimTemplate:
@@ -63,6 +65,8 @@ spec:
 
         alertmanager:
           alertmanagerSpec:
+            service:
+            type: LoadBalancer
             storage:
               volumeClaimTemplate:
                 spec:
