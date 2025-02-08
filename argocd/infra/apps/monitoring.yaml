@@ -15,7 +15,7 @@ spec:
         grafana:
           persistence:
             enabled: true
-            storageClassName: synology-nfs
+            storageClassName: synology-grafana
             accessModes:
               - ReadWriteMany
             size: 10Gi
@@ -39,25 +39,12 @@ spec:
               operator: Exists
               effect: NoSchedule
 
-          ingress:
-            enabled: true
-            ingressClassName: traefik
-            annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-staging"
-              traefik.ingress.kubernetes.io/router.middlewares: "default-redirect-https@kubernetescrd"
-            hosts:
-              - grafana.gitopsguy.com
-            tls:
-              - secretName: grafana-tls
-                hosts:
-                  - grafana.gitopsguy.com
-
         prometheus:
           prometheusSpec:
             storage:
               volumeClaimTemplate:
                 spec:
-                  storageClassName: synology-nfs
+                  storageClassName: synology-prometheus
                   accessModes: ["ReadWriteMany"]
                   resources:
                     requests:
@@ -73,34 +60,18 @@ spec:
                           operator: In
                           values:
                             - "true"
-          ingress:
-            enabled: true
-            ingressClassName: traefik
-            annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-staging"
-              traefik.ingress.kubernetes.io/router.middlewares: "default-redirect-https@kubernetescrd"
-            hosts:
-              - prometheus.gitopsguy.com
-            tls:
-              - secretName: prometheus-tls
-                hosts:
-                  - prometheus.gitopsguy.com
 
         alertmanager:
           alertmanagerSpec:
             storage:
               volumeClaimTemplate:
                 spec:
-                  storageClassName: synology-nfs
+                  storageClassName: synology-alertmanager
                   accessModes: ["ReadWriteMany"]
                   resources:
                     requests:
                       storage: 10Gi
                   volumeName: synology-alertmanager-pv
-            volumeMounts:
-              - name: storage-volume
-                mountPath: /alertmanager
-                subPath: alertmanager
             affinity:
               nodeAffinity:
                 requiredDuringSchedulingIgnoredDuringExecution:
