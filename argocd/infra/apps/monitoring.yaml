@@ -66,7 +66,7 @@ spec:
                   volumeName: synology-nfs-pv
                   volumeMounts:
                     - mountPath: /alertmanager
-                      subPath: alert-manager
+                      subPath: alertmanager
             affinity:
               nodeAffinity:
                 requiredDuringSchedulingIgnoredDuringExecution:
