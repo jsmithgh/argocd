@@ -38,22 +38,6 @@ spec:
               operator: Exists
               effect: NoSchedule
 
-          ingress:
-            enabled: true
-            ingressClassName: traefik
-            annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-staging"
-              traefik.ingress.kubernetes.io/router.middlewares: "default-redirect-https@kubernetescrd"
-            paths:
-              - /
-            hosts:
-              - grafana.gitopsguy.com
-            tls:
-              - secretName: grafana-tls
-                hosts:
-                  - grafana.gitopsguy.com
-            pathType: Prefix
-
         prometheus:
           prometheusSpec:
             retention: 30d
