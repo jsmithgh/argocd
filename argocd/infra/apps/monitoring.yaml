@@ -52,7 +52,8 @@ spec:
                       storage: 80Gi
                   volumeName: synology-nfs-pv
             volumeMounts:
-              - mountPath: /prometheus
+              - name: storage-volume
+                mountPath: /prometheus
                 subPath: prometheus
             retention: 30d
             affinity:
