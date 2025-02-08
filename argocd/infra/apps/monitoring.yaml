@@ -33,6 +33,13 @@ spec:
                   operator: In
                   values:
                     - "true"
+    service:
+      type: LoadBalancer
+      ports:
+        - name: http
+          port: 80
+          targetPort: 3000
+          protocol: TCP
 
   prometheus:
     prometheusSpec:
@@ -58,6 +65,13 @@ spec:
                     operator: In
                     values:
                       - "true"
+      service:
+        type: LoadBalancer
+        ports:
+          - name: http
+            port: 9090
+            targetPort: 9090
+            protocol: TCP
 
   alertmanager:
     alertmanagerSpec:
