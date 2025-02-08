@@ -3,13 +3,11 @@ kind: Application
 metadata:
   name: kube-prometheus-stack-crds
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/prometheus-operator/prometheus-operator.git
-    targetRevision: v0.80.0 # Make sure this matches your installed version
+    targetRevision: v0.71.2
     path: example/prometheus-operator-crd
     directory:
       recurse: true
@@ -18,13 +16,20 @@ spec:
     namespace: monitoring
   syncPolicy:
     syncOptions:
-      - Replace=false # Important: Don't replace existing CRDs initially
+      - Replace=true
       - CreateNamespace=true
-      - RespectIgnoreDifferences=true
+      - ServerSideApply=true # Add this to handle large annotations
     automated:
-      prune: false # Important: Don't prune existing resources initially
+      prune: false
+      selfHeal: true
   ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
       jsonPointers:
         - /metadata/annotations
+        - /metadata/labels
