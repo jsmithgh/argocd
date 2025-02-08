@@ -11,6 +11,9 @@ spec:
     chart: kube-prometheus-stack
     helm:
       values: |
+        crds:
+          create: false
+
         grafana:
           persistence:
             enabled: true
@@ -20,11 +23,12 @@ spec:
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
-                - matchExpressions:
-                  - key: workload-type/monitoring
-                    operator: In
-                    values:
-                    - "true"
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: workload-type/monitoring
+                      operator: In
+                      values:
+                      - "true"
 
         prometheus:
           prometheusSpec:
@@ -96,3 +100,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - SkipCRDs=true
