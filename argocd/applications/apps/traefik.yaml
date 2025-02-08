@@ -13,14 +13,17 @@ spec:
       values: |
         deployment:
           enabled: true
-          replicas: 3  # For high availability across control plane nodes
+          replicas: 3
         service:
-          type: NodePort
+          type: LoadBalancer
+          # Remove nodePort settings since we're using LoadBalancer
+          annotations:
+            metallb.universe.tf/allow-shared-ip: traefik
         ports:
           web:
-            nodePort: 32080  # HTTP port
+            port: 80
           websecure:
-            nodePort: 32443  # HTTPS port
+            port: 443
         ingressRoute:
           dashboard:
             enabled: true
