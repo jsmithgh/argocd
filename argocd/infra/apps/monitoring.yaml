@@ -50,11 +50,7 @@ spec:
                   resources:
                     requests:
                       storage: 80Gi
-                  volumeName: synology-nfs-pv
-            volumeMounts:
-              - name: storage-volume
-                mountPath: /prometheus
-                subPath: prometheus
+                  volumeName: synology-prometheus-pv
             retention: 30d
             affinity:
               nodeAffinity:
@@ -88,7 +84,7 @@ spec:
                   resources:
                     requests:
                       storage: 10Gi
-                  volumeName: synology-nfs-pv
+                  volumeName: synology-alertmanager-pv
             volumeMounts:
               - name: storage-volume
                 mountPath: /alertmanager
