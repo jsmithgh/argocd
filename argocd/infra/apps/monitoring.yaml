@@ -12,10 +12,10 @@ spec:
     chart: kube-prometheus-stack
     helm:
       valueFiles:
-        - "../values/grafana.yaml"
-        - "../values/prometheus.yaml"
-        - "../values/alertmanager.yaml"
-        - "../values/operator.yaml"
+        - "values/grafana.yaml"
+        - "values/prometheus.yaml"
+        - "values/alertmanager.yaml"
+        - "values/operator.yaml"
 
   destination:
     server: https://kubernetes.default.svc
