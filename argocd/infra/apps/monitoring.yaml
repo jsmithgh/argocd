@@ -62,6 +62,13 @@ spec:
                           operator: In
                           values:
                             - "true"
+            additionalScrapeConfigs:
+              - job_name: 'opnsense'
+                static_configs:
+                  - targets: ['192.168.20.1:9100']
+                metrics_path: /metrics
+                scheme: http
+                scrape_interval: 30s
 
         alertmanager:
           service:           # Move service to this level
