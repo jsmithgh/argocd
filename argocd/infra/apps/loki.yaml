@@ -8,80 +8,38 @@ spec:
   source:
     chart: loki
     repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 6.27.0 # Latest stable version as of February 2025
+    targetRevision: 6.27.0
     helm:
       values: |
         loki:
           auth_enabled: false
-          commonConfig:
-            replication_factor: 1
           storage:
             type: filesystem
-          storage_config:
-            filesystem:
-              directory: /data/loki/chunks
-          ruler:
-            storage:
-              type: filesystem
+          persistence:
+            enabled: true
+            storageClassName: synology-loki
+            size: 30Gi
+          config:
+            compactor:
+              shared_store: filesystem
+            storage_config:
               filesystem:
-                directory: /data/loki/rules
-          compactor:
-            retention_enabled: true
-            working_directory: /data/loki/compactor
-            shared_store: filesystem
-
+                directory: /data/loki/chunks
+        serviceMonitor:
+          enabled: true
         monitoring:
           selfMonitoring:
             enabled: true
             grafanaAgent:
               installOperator: false
-          lokiCanary:
-            enabled: true
-
-        persistence:
-          enabled: true
-          storageClass: synology-loki
-          size: 50Gi
-          accessModes:
-            - ReadWriteOnce
-
-        serviceMonitor:
-          enabled: true
-
         gateway:
           enabled: true
-          replicas: 1
-
-        write:
-          persistence:
-            size: 10Gi
-            storageClass: synology-loki
-
-        read:
-          persistence:
-            size: 10Gi
-            storageClass: synology-loki
-
-        backend:
-          persistence:
-            size: 10Gi
-            storageClass: synology-loki
-
-        test:
-          enabled: false
-
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
-
-  # Health check configuration
-  health:
-    healthCheckTimeout: 180s
