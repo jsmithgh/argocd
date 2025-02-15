@@ -11,19 +11,19 @@ spec:
     targetRevision: 6.27.0
     helm:
       values: |
-        loki:
-          auth_enabled: false
+        mode: single
+        auth_enabled: false
         monitoring:
+          selfMonitoring:
+            enabled: false
+            grafanaAgent:
+              installOperator: false
           lokiCanary:
             enabled: false
-        singleBinary:
-          replicas: 1
-          persistence:
-            enabled: true
-            size: 30Gi
-            storageClassName: synology-loki
-        minio:
-          enabled: false
+        persistence:
+          enabled: true
+          size: 30Gi
+          storageClassName: synology-loki
         test:
           enabled: false
   destination:
