@@ -16,6 +16,27 @@ spec:
     targetRevision: 6.27.0
     helm:
       values: |
+        loki:
+          auth_enabled: false
+          commonConfig:
+            replication_factor: 1
+            path_prefix: /var/loki
+          storage:
+            type: filesystem
+          schemaConfig:
+            configs:
+              - from: "2023-01-01"
+                store: boltdb-shipper
+                object_store: filesystem
+                schema: v12
+                index:
+                  prefix: index_
+                  period: 24h
+          limits_config:
+            retention_period: 168h
+
+        deploymentMode: "single-binary"
+
         singleBinary:
           replicas: 1
           affinity:
@@ -41,30 +62,17 @@ spec:
                           values:
                             - loki
                     topologyKey: kubernetes.io/hostname
-
           persistence:
             enabled: true
             size: 10Gi
             storageClass: synology-loki
-
-        loki:
-          auth_enabled: false
-          commonConfig:
-            replication_factor: 1
-            path_prefix: /var/loki
-          storage:
-            type: filesystem
-          schemaConfig:
-            configs:
-              - from: "2023-01-01"
-                store: boltdb-shipper
-                object_store: filesystem
-                schema: v12
-                index:
-                  prefix: index_
-                  period: 24h
-          limits_config:
-            retention_period: 168h
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
 
         monitoring:
           serviceMonitor:
