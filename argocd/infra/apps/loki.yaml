@@ -11,29 +11,39 @@ spec:
     targetRevision: 6.27.0
     helm:
       values: |
-        loki:
-          auth_enabled: false
-          storage:
-            type: filesystem
+        singleBinary:
+          replicas: 1
           persistence:
             enabled: true
             storageClassName: synology-loki
             size: 30Gi
-          config:
-            compactor:
-              shared_store: filesystem
+        loki:
+          auth_enabled: false
+          structuredConfig:
+            common:
+              path_prefix: /var/loki
+              storage:
+                filesystem:
+                  chunks_directory: /var/loki/chunks
+                  rules_directory: /var/loki/rules
+              ring:
+                kvstore:
+                  store: memberlist
+            schema_config:
+              configs:
+                - from: "2020-10-24"
+                  store: boltdb-shipper
+                  object_store: filesystem
+                  schema: v11
+                  index:
+                    prefix: index_
+                    period: 24h
             storage_config:
-              filesystem:
-                directory: /data/loki/chunks
-        serviceMonitor:
-          enabled: true
-        monitoring:
-          selfMonitoring:
-            enabled: true
-            grafanaAgent:
-              installOperator: false
-        gateway:
-          enabled: true
+              boltdb_shipper:
+                active_index_directory: /var/loki/index
+                cache_location: /var/loki/cache
+                cache_ttl: 24h
+                shared_store: filesystem
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
