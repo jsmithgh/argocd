@@ -8,18 +8,31 @@ spec:
   source:
     chart: loki
     repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 6.27.0
+    targetRevision: 5.8.9
     helm:
       values: |
-        deploymentMode: single
         loki:
           auth_enabled: false
           storage:
             type: filesystem
-        persistence:
-          enabled: true
-          size: 30Gi
-          storageClassName: synology-loki
+          commonConfig:
+            path_prefix: /var/loki
+            replication_factor: 1
+        singleBinary:
+          replicas: 1
+          persistence:
+            enabled: true
+            size: 30Gi
+            storageClassName: synology-loki
+        runtimeConfig:
+          enabled: false
+        monitoring:
+          lokiCanary:
+            enabled: false
+          selfMonitoring:
+            enabled: false
+        test:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
