@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: loki
+    targetRevision: 6.27.0
+    helm:
+      values: |
+        loki:
+          auth_enabled: false
+          commonConfig:
+            replication_factor: 1
+          storage:
+            type: filesystem
+          storage_config:
+            filesystem:
+              chunks_directory: /data/loki/chunks
+              rules_directory: /data/loki/rules
+          schema_config:
+            configs:
+              - from: "2023-01-01"
+                store: boltdb-shipper
+                object_store: filesystem
+                schema: v12
+                index:
+                  prefix: index_
+                  period: 24h
+          limits_config:
+            retention_period: 168h  # 7 days retention
+          ruler:
+            storage:
+              type: filesystem
+            rule_path: /data/loki/rules
+
+        # Persistence configuration
+        persistence:
+          enabled: true
+          size: 10Gi
+          storageClass: synology-loki
+
+        # Service configuration
+        service:
+          type: LoadBalancer
+          port: 3100
+
+        # Ingress configuration (if needed)
+        ingress:
+          enabled: false
+
+        # Monitoring configuration
+        serviceMonitor:
+          enabled: true
+
+        # Network Policy
+        networkPolicy:
+          enabled: true
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
