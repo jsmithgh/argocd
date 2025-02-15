@@ -24,13 +24,19 @@ spec:
             enabled: true
             size: 30Gi
             storageClassName: synology-loki
-        runtimeConfig:
-          enabled: false
         monitoring:
-          lokiCanary:
+          serviceMonitor:
             enabled: false
           selfMonitoring:
             enabled: false
+            grafanaAgent:
+              installOperator: false
+          lokiCanary:
+            enabled: false
+          rules:
+            enabled: false
+        gateway:
+          enabled: false
         test:
           enabled: false
   destination:
@@ -42,3 +48,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
