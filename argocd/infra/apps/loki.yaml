@@ -16,37 +16,16 @@ spec:
     targetRevision: 6.27.0
     helm:
       values: |
-        deploymentMode: "single-binary"
+        deploymentMode: "SingleBinary<->SimpleScalable"
 
         singleBinary:
           replicas: 1
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: In
-                        values:
-                          - k3s-work-04
-                          - k3s-work-08
-                          - k3s-work-12
-                          - k3s-work-16
-            podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  podAffinityTerm:
-                    labelSelector:
-                      matchExpressions:
-                        - key: app
-                          operator: In
-                          values:
-                            - loki
-                    topologyKey: kubernetes.io/hostname
           persistence:
             enabled: true
             size: 10Gi
             storageClass: synology-loki
+          nodeSelector:
+            kubernetes.io/hostname: k3s-work-04
           resources:
             requests:
               cpu: 200m
@@ -55,27 +34,24 @@ spec:
               cpu: 1000m
               memory: 1Gi
 
-        auth_enabled: false
+        read:
+          replicas: 0
+          persistence:
+            enabled: false
 
-        commonConfig:
-          replication_factor: 1
-          path_prefix: /var/loki
+        write:
+          replicas: 0
+          persistence:
+            enabled: false
 
-        storage:
-          type: filesystem
+        backend:
+          replicas: 0
+          persistence:
+            enabled: false
 
-        schemaConfig:
-          configs:
-            - from: "2023-01-01"
-              store: boltdb-shipper
-              object_store: filesystem
-              schema: v12
-              index:
-                prefix: index_
-                period: 24h
-
-        limits_config:
-          retention_period: 168h
+        service:
+          type: LoadBalancer
+          port: 3100
 
         monitoring:
           serviceMonitor:
@@ -85,10 +61,6 @@ spec:
             enabled: true
             grafanaAgent:
               installOperator: false
-
-        service:
-          type: LoadBalancer
-          port: 3100
 
         networkPolicy:
           enabled: true
