@@ -18,6 +18,18 @@ spec:
       values: |
         loki:
           auth_enabled: false
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/hostname
+                        operator: In
+                        values:
+                          - k3s-work-04
+                          - k3s-work-08
+                          - k3s-work-12
+                          - k3s-work-16
           commonConfig:
             replication_factor: 1
           storage:
