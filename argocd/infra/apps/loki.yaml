@@ -8,22 +8,33 @@ spec:
   source:
     chart: loki
     repoURL: https://grafana.github.io/helm-charts
-    targetRevision: 6.27.0
+    targetRevision: 5.41.0
     helm:
       values: |
-        mode: single
+        mode: monolithic
         auth_enabled: false
         monitoring:
           selfMonitoring:
             enabled: false
-            grafanaAgent:
-              installOperator: false
           lokiCanary:
             enabled: false
         persistence:
           enabled: true
           size: 30Gi
           storageClassName: synology-loki
+        config:
+          storage_config:
+            filesystem:
+              directory: /data/loki
+          schema_config:
+            configs:
+              - from: 2020-10-24
+                store: boltdb-shipper
+                object_store: filesystem
+                schema: v11
+                index:
+                  prefix: index_
+                  period: 24h
         test:
           enabled: false
   destination:
