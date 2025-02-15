@@ -69,6 +69,16 @@ spec:
                 metrics_path: /metrics
                 scheme: http
                 scrape_interval: 30s
+              - job_name: 'proxmox-nodes'
+                static_configs:
+                  - targets:
+                      - '192.168.20.11:9100'
+                      - '192.168.20.12:9100'
+                      - '192.168.20.13:9100'
+                      - '192.168.20.14:9100'
+                metrics_path: /metrics
+                scheme: http
+                scrape_interval: 30s
 
         alertmanager:
           service:           # Move service to this level
