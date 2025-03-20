@@ -1,17 +1,13 @@
 ---
-# General global settings
-global:
-  image:
-    tag: v2.14.6 # Specify the ArgoCD version here
-
-controller:
-  replicas: 2
-
-redis-ha:
-  enabled: true
-
-repoServer:
-  replicas: 2
-
-server:
-  replicas: 2
+argo-cd:
+  global:
+    image:
+      tag: v2.14.7
+  controller:
+    replicas: 2
+  redis-ha:
+    enabled: true
+  repoServer:
+    replicas: 2
+  server:
+    replicas: 2

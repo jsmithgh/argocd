@@ -5,3 +5,7 @@ description: Self-managed ArgoCD installation
 type: application
 version: 0.1.0
 appVersion: "2.14.6"
+dependencies:
+  - name: argo-cd
+    version: "7.8.13" # Use the appropriate Helm chart version
+    repository: "https://argoproj.github.io/argo-helm"
