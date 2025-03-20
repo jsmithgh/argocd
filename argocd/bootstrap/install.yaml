@@ -10,7 +10,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/argoproj/argo-cd.git
-    path: manifests/cluster-install
+    path: manifests/ha/cluster-install
     targetRevision: v2.14.7 # Change this when upgrading
   destination:
     server: https://kubernetes.default.svc
