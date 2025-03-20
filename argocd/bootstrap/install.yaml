@@ -1,3 +1,4 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -8,9 +9,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/jsmithgh/argocd.git
-    path: argocd/bootstrap
-    targetRevision: HEAD
+    repoURL: https://github.com/argoproj/argo-cd.git
+    path: manifests/cluster-install
+    targetRevision: v2.14.7 # Change this when upgrading
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
