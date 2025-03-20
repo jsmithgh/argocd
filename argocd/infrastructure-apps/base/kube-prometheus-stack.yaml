@@ -22,19 +22,6 @@ spec:
               - ReadWriteMany
             size: 10Gi
 
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/hostname
-                        operator: In
-                        values:
-                          - k3s-work-04
-                          - k3s-work-08
-                          - k3s-work-12
-                          - k3s-work-16
-
           tolerations:
             - key: node-role.kubernetes.io/master
               operator: Exists
@@ -53,15 +40,6 @@ spec:
                   resources:
                     requests:
                       storage: 80Gi
-            affinity:
-              nodeAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  nodeSelectorTerms:
-                    - matchExpressions:
-                        - key: workload-type/monitoring
-                          operator: In
-                          values:
-                            - "true"
             additionalScrapeConfigs:
               - job_name: 'opnsense'
                 static_configs:
@@ -92,30 +70,12 @@ spec:
                   resources:
                     requests:
                       storage: 10Gi
-            affinity:
-              nodeAffinity:
-                requiredDuringSchedulingIgnoredDuringExecution:
-                  nodeSelectorTerms:
-                    - matchExpressions:
-                        - key: workload-type/monitoring
-                          operator: In
-                          values:
-                            - "true"
 
         prometheusOperator:
           admissionWebhooks:
             enabled: true
           tlsProxy:
             enabled: true
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: workload-type/monitoring
-                        operator: In
-                        values:
-                          - "true"
 
   destination:
     server: https://kubernetes.default.svc
