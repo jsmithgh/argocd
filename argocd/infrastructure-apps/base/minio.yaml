@@ -26,6 +26,10 @@ spec:
         # Set access credentials - use a secret in production!
         rootUser: minioadmin
         rootPassword: minioadmin
+        # Expose MinIO console via LoadBalancer
+        consoleService:
+          type: LoadBalancer
+          port: 9001
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
