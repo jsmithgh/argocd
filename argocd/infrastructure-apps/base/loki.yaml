@@ -25,7 +25,7 @@ spec:
           persistence:
             enabled: true
             size: 30Gi
-            storageClassName: synology-loki
+            storageClass: synology-loki
             name: storage
             accessMode: ReadWriteOnce
         monitoring:
