@@ -17,7 +17,7 @@ spec:
             replication_factor: 2
           limitsConfig:
             retention_period: 30d
-          # Add schema configuration
+            allow_structured_metadata: false  # Disable structured metadata to work with v11 schema
           schemaConfig:
             configs:
               - from: "2020-10-24"
@@ -42,19 +42,38 @@ spec:
               s3ForcePathStyle: true
               insecure: true
 
-        # For testing purposes, you could also use this option instead of defining schema:
-        # loki:
-        #   useTestSchema: true
+        gateway:
+          enabled: true
 
         deploymentMode: SimpleScalable
+
         singleBinary:
           replicas: 0
+
         simpleScalable:
           enabled: true
+
+          backend:
+            replicas: 1
+            persistence:
+              enabled: true
+              size: 10Gi
+              storageClass: synology-loki
+
           read:
-            replicas: 2
+            replicas: 1
+            persistence:
+              enabled: true
+              size: 5Gi
+              storageClass: synology-loki
+
           write:
-            replicas: 2
+            replicas: 1
+            persistence:
+              enabled: true
+              size: 20Gi
+              storageClass: synology-loki
+
         monitoring:
           serviceMonitor:
             enabled: true
@@ -66,8 +85,7 @@ spec:
             enabled: false
           rules:
             enabled: false
-        gateway:
-          enabled: false
+
         test:
           enabled: false
   destination:
