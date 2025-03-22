@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/grafana/agent.git
     targetRevision: main
-    path: operations/operator/crds
+    path: operations/agent-static-operator/crds
     directory:
       recurse: true
   destination:
