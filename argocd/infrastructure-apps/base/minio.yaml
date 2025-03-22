@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: minio
+    repoURL: https://charts.min.io/
+    targetRevision: 7.0.1
+    helm:
+      values: |
+        mode: standalone
+        persistence:
+          enabled: true
+          size: 50Gi
+          storageClass: synology-loki
+        buckets:
+          - name: loki-data
+            policy: none
+            purge: false
+        # Set access credentials - use a secret in production!
+        rootUser: minioadmin
+        rootPassword: minioadmin
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
