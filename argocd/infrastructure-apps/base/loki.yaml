@@ -14,22 +14,37 @@ spec:
         loki:
           auth_enabled: false
           storage:
-            type: filesystem
+            type: s3
+            s3:
+              endpoint: minio.monitoring.svc.cluster.local:9000
+              bucketnames: loki-data
+              access_key_id: minioadmin
+              secret_access_key: minioadmin
+              insecure: true
+              s3forcepathstyle: true
           commonConfig:
-            path_prefix: /var/loki
-            replication_factor: 1  # Changed to 1 for single binary mode
+            replication_factor: 2
           limitsConfig:
             retention_period: 30d
-        deploymentMode: SingleBinary
+
+        # Now we can use SimpleScalable mode since we have object storage
+        deploymentMode: SimpleScalable
+
+        # Disable single binary mode
         singleBinary:
-          replicas: 1  # Changed to 1 for single binary mode
-          persistence:
-            enabled: true
-            size: 30Gi
-            storageClass: synology-loki
-            accessMode: ReadWriteOnce
+          replicas: 0
+
+        # Enable and configure SimpleScalable mode
         simpleScalable:
-          enabled: false  # Disabled SimpleScalable mode
+          enabled: true
+          # Read components (queriers)
+          read:
+            replicas: 2
+          # Write components (distributors, ingesters)
+          write:
+            replicas: 2
+
+        # Other configurations remain the same
         monitoring:
           serviceMonitor:
             enabled: true
