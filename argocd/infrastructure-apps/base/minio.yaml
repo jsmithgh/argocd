@@ -16,6 +16,9 @@ spec:
           enabled: true
           size: 50Gi
           storageClass: synology-loki
+        resources:
+          requests:
+            memory: 2Gi
         buckets:
           - name: loki-data
             policy: none
