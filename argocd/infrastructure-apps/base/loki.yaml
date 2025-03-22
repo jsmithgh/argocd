@@ -13,38 +13,37 @@ spec:
       values: |
         loki:
           auth_enabled: false
-          storage:
-            type: s3
-            s3:
-              endpoint: minio.monitoring.svc.cluster.local:9000
-              bucketnames: loki-data
-              access_key_id: minioadmin
-              secret_access_key: minioadmin
-              insecure: true
-              s3forcepathstyle: true
           commonConfig:
             replication_factor: 2
           limitsConfig:
             retention_period: 30d
+          storage:
+            bucketNames:
+              chunks: loki-data
+              ruler: loki-ruler
+              admin: loki-admin
+            s3:
+              s3: null  # Required default value
+              endpoint: minio.monitoring.svc.cluster.local:9000
+              region: us-east-1  # Required default value
+              secretAccessKey: minioadmin
+              accessKeyId: minioadmin
+              signatureVersion: v4
+              s3ForcePathStyle: true
+              insecure: true
 
-        # Now we can use SimpleScalable mode since we have object storage
         deploymentMode: SimpleScalable
 
-        # Disable single binary mode
         singleBinary:
           replicas: 0
 
-        # Enable and configure SimpleScalable mode
         simpleScalable:
           enabled: true
-          # Read components (queriers)
           read:
             replicas: 2
-          # Write components (distributors, ingesters)
           write:
             replicas: 2
 
-        # Other configurations remain the same
         monitoring:
           serviceMonitor:
             enabled: true
