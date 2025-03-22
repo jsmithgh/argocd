@@ -17,32 +17,19 @@ spec:
             type: filesystem
           commonConfig:
             path_prefix: /var/loki
-            replication_factor: 2
+            replication_factor: 1  # Changed to 1 for single binary mode
           limitsConfig:
             retention_period: 30d
-
-        deploymentMode: SimpleScalable
-
+        deploymentMode: SingleBinary
         singleBinary:
-          replicas: 0
-
+          replicas: 1  # Changed to 1 for single binary mode
+          persistence:
+            enabled: true
+            size: 30Gi
+            storageClass: synology-loki
+            accessMode: ReadWriteOnce
         simpleScalable:
-          enabled: true
-
-          read:
-            replicas: 2
-            persistence:
-              enabled: true
-              size: 10Gi
-              storageClass: synology-loki
-
-          write:
-            replicas: 2
-            persistence:
-              enabled: true
-              size: 30Gi
-              storageClass: synology-loki
-
+          enabled: false  # Disabled SimpleScalable mode
         monitoring:
           serviceMonitor:
             enabled: true
