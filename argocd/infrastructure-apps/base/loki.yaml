@@ -26,6 +26,8 @@ spec:
             enabled: true
             size: 30Gi
             storageClassName: synology-loki
+            name: storage
+            accessMode: ReadWriteOnce
         monitoring:
           serviceMonitor:
             enabled: true
