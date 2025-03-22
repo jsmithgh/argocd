@@ -22,53 +22,18 @@ spec:
             storageClass: synology-loki
             accessMode: ReadWriteOnce
             size: 10Gi
-
-          # Config as a string template rather than a map structure
           config: |
             limits_config:
               retention_period: 360h
-
-          # Use specific sections for other configurations
-          limits_config:
-            retention_period: 360h
-
         singleBinary:
           replicas: 1
-
-        # If you're using the microservices mode, uncomment and adjust the following section
-        # instead of using singleBinary
-        # gateway:
-        #   enabled: true
-        #
-        # distributor:
-        #   replicas: 1
-        #
-        # ingester:
-        #   replicas: 1
-        #   persistence:
-        #     enabled: true
-        #     storageClass: synology-loki
-        #     accessMode: ReadWriteOnce
-        #     size: 10Gi
-        #
-        # querier:
-        #   replicas: 1
-        #
-        # queryFrontend:
-        #   replicas: 1
-
-        # Configure service monitor for Prometheus
         serviceMonitor:
           enabled: true
-
-        # Configure dashboards for Grafana
         dashboards:
           enabled: true
-
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
-
   syncPolicy:
     automated:
       prune: true
