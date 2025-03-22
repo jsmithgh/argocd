@@ -17,33 +17,44 @@ spec:
             replication_factor: 2
           limitsConfig:
             retention_period: 30d
+          # Add schema configuration
+          schemaConfig:
+            configs:
+              - from: "2020-10-24"
+                store: boltdb-shipper
+                object_store: s3
+                schema: v11
+                index:
+                  prefix: index_
+                  period: 24h
           storage:
             bucketNames:
               chunks: loki-data
               ruler: loki-ruler
               admin: loki-admin
             s3:
-              s3: null  # Required default value
+              s3: null
               endpoint: minio.monitoring.svc.cluster.local:9000
-              region: us-east-1  # Required default value
+              region: us-east-1
               secretAccessKey: minioadmin
               accessKeyId: minioadmin
               signatureVersion: v4
               s3ForcePathStyle: true
               insecure: true
 
-        deploymentMode: SimpleScalable
+        # For testing purposes, you could also use this option instead of defining schema:
+        # loki:
+        #   useTestSchema: true
 
+        deploymentMode: SimpleScalable
         singleBinary:
           replicas: 0
-
         simpleScalable:
           enabled: true
           read:
             replicas: 2
           write:
             replicas: 2
-
         monitoring:
           serviceMonitor:
             enabled: true
