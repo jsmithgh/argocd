@@ -90,7 +90,7 @@ spec:
           selfMonitoring:
             enabled: false
           lokiCanary:
-            enabled: false  # Explicitly disable canary
+            enabled: false
           rules:
             enabled: false
 
