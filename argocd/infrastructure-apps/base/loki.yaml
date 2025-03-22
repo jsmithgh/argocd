@@ -55,9 +55,10 @@ spec:
         dashboards:
           enabled: true
 
-        config:
-          limits_config:
-            retention_period: 168h  # 7 days
+        loki:
+          config:
+            limits_config:
+              retention_period: 360h  # 15 days
 
   destination:
     server: https://kubernetes.default.svc
