@@ -14,6 +14,7 @@ spec:
     helm:
       values: |
         loki:
+          auth_enabled: false
           commonConfig:
             replication_factor: 1
           storage:
@@ -22,7 +23,16 @@ spec:
             enabled: true
             storageClass: synology-loki
             accessMode: ReadWriteOnce
-            size: 20Gi
+            size: 10Gi
+
+          # Config as a string template rather than a map structure
+          config: |
+            limits_config:
+              retention_period: 360h
+
+          # Use specific sections for other configurations
+          limits_config:
+            retention_period: 360h
 
         singleBinary:
           replicas: 1
@@ -49,20 +59,17 @@ spec:
         # queryFrontend:
         #   replicas: 1
 
+        # Configure service monitor for Prometheus
         serviceMonitor:
           enabled: true
 
+        # Configure dashboards for Grafana
         dashboards:
           enabled: true
 
-        loki:
-          config:
-            limits_config:
-              retention_period: 360h  # 15 days
-
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability
+    namespace: monitoring
 
   syncPolicy:
     automated:
