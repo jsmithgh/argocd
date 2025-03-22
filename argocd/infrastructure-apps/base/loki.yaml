@@ -18,6 +18,8 @@ spec:
           commonConfig:
             path_prefix: /var/loki
             replication_factor: 1
+            limits_config:
+              retention_period: 30d
         singleBinary:
           replicas: 1
           persistence:
@@ -26,7 +28,7 @@ spec:
             storageClassName: synology-loki
         monitoring:
           serviceMonitor:
-            enabled: false
+            enabled: true
           selfMonitoring:
             enabled: false
             grafanaAgent:
