@@ -29,13 +29,25 @@ spec:
         service:
           type: LoadBalancer
 
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                  - talos-06
+
+        terminationGracePeriodSeconds: 120
+
         # resources:
         #   requests:
         #     memory: 2Gi
         #     cpu: 500m
         #   limits:
-        #     memory: 3Gi
-        #     cpu: 1
+        #     memory: 4.5Gi
+        #     cpu: 2
 
   destination:
     server: https://kubernetes.default.svc
