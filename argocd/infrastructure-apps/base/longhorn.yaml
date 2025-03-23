@@ -15,7 +15,7 @@ spec:
           preUpgradeChecker:
             jobEnabled: false
           priorityClass:
-            create: true
+            create: false
           csi:
             kubeletRootDir: /var/lib/kubelet
   destination:
