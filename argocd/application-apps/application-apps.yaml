@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/jsmithgh/argocd.git
-    path: argocd/application-apps/apps
+    path: argocd/application-apps/base
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
