@@ -22,6 +22,7 @@ spec:
           memory: 3G
 
         persistence:
+          storageClass: "local-path"
           dataDir:
             enabled: true
             size: 5Gi
@@ -41,14 +42,6 @@ spec:
                   - talos-06
 
         terminationGracePeriodSeconds: 120
-
-        # resources:
-        #   requests:
-        #     memory: 2Gi
-        #     cpu: 500m
-        #   limits:
-        #     memory: 4.5Gi
-        #     cpu: 2
 
   destination:
     server: https://kubernetes.default.svc
