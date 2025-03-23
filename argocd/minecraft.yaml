@@ -20,17 +20,14 @@ spec:
           gameMode: survival
           motd: "Kubernetes Minecraft Server"
           memory: 3G
-
         persistence:
           storageClass: "synology-minecraft"
           dataDir:
             enabled: true
             size: 5Gi
             storageClass: "synology-minecraft"
-
         service:
           type: LoadBalancer
-
         terminationGracePeriodSeconds: 120
 
   destination:
