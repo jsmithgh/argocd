@@ -22,24 +22,14 @@ spec:
           memory: 3G
 
         persistence:
-          storageClass: "local-path"
+          storageClass: "synology-minecraft"
           dataDir:
             enabled: true
             size: 5Gi
-            storageClass: "local-path"
+            storageClass: "synology-minecraft"
 
         service:
           type: LoadBalancer
-
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: In
-                  values:
-                  - talos-06
 
         terminationGracePeriodSeconds: 120
 
