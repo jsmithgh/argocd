@@ -13,6 +13,9 @@ spec:
       skipCrds: true
       values: |
         grafana:
+          grafana.ini:
+            feature_toggles:
+              transformationsVariableSupport: true
           service:
             type: LoadBalancer
           persistence:
