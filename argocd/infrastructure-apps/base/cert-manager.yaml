@@ -8,10 +8,38 @@ spec:
   sources:
     - chart: cert-manager
       repoURL: https://charts.jetstack.io
-      targetRevision: v1.14.x
+      targetRevision: v1.14.5
       helm:
         values: |
           installCRDs: true
+          # Resource limits for the main controller
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+
+          # Resource limits for the webhook
+          webhook:
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                cpu: 100m
+                memory: 128Mi
+
+          # Resource limits for the CA injector
+          cainjector:
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                cpu: 100m
+                memory: 128Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
