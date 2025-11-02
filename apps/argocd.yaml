@@ -5,11 +5,11 @@ metadata:
   name: argocd
   namespace: argocd
   finalizers:
-  - resources-finalizer.argocd.argoproj.io  # Important for self-management
+  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
-    repoURL: https://github.com/yourusername/my-homelab-gitops
+    repoURL: https://github.com/jsmithgh/argocd
     targetRevision: main
     path: argocd
   destination:
