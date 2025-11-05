@@ -16,6 +16,13 @@ spec:
           deploymentMode: SingleBinary
           storage:
             type: filesystem
+            bucketNames:
+              chunks: chunks
+              ruler: ruler
+              admin: admin
+            filesystem:
+              chunks_directory: /var/loki/chunks
+              rules_directory: /var/loki/rules
           commonConfig:
             path_prefix: /var/loki
             replication_factor: 1
