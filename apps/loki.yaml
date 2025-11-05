@@ -37,6 +37,10 @@ spec:
                   period: 24h
           limits_config:
             retention_period: 30d
+        chunksCache:
+          enabled: false
+        resultsCache:
+          enabled: false
         singleBinary:
           readinessProbe:
             initialDelaySeconds: 120
@@ -70,7 +74,6 @@ spec:
           enabled: false
         test:
           enabled: false
-
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
