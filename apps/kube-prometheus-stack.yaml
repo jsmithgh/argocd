@@ -84,3 +84,15 @@ spec:
       selfHeal: false
     syncOptions:
       - CreateNamespace=true
+
+  ignoreDifferences:
+  - group: monitoring.coreos.com
+    kind: ServiceMonitor
+    jsonPointers:
+    - /spec/endpoints/0/trackTimestampsStaleness
+    - /spec/endpoints/1/trackTimestampsStaleness
+    # Add more indices if you have more endpoints
+  - group: monitoring.coreos.com
+    kind: PodMonitor
+    jsonPointers:
+    - /spec/podMetricsEndpoints/0/trackTimestampsStaleness
