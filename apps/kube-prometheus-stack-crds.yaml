@@ -9,27 +9,13 @@ spec:
     repoURL: https://github.com/prometheus-operator/prometheus-operator.git
     targetRevision: v0.94.2
     path: example/prometheus-operator-crd
-    directory:
-      recurse: true
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
   syncPolicy:
     syncOptions:
-      - Replace=true
       - CreateNamespace=true
-      - ServerSideApply=true # Add this to handle large annotations
+      - ServerSideApply=true
     automated:
       prune: false
       selfHeal: true
-  ignoreDifferences:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      jqPathExpressions:
-        - .metadata.annotations
-        - .metadata.labels
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      jsonPointers:
-        - /metadata/annotations
-        - /metadata/labels
