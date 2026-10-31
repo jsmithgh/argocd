@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: argocd
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
@@ -12,10 +10,8 @@ spec:
     targetRevision: 10.11.6
     chart: argo-cd
     helm:
+      releaseName: argocd
       valuesObject:
-        global:
-          image:
-            tag: v3.5.6
         server:
           service:
             type: LoadBalancer
@@ -24,7 +20,7 @@ spec:
     namespace: argocd
   syncPolicy:
     automated:
-      prune: true
+      prune: false
       selfHeal: true
     syncOptions:
-    - CreateNamespace=true
+    - ServerSideApply=true
