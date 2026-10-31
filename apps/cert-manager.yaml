@@ -11,7 +11,9 @@ spec:
       targetRevision: v1.21.3
       helm:
         values: |
-          installCRDs: true
+          crds:
+            enabled: true
+            keep: true
           # Resource limits for the main controller
           resources:
             requests:
@@ -46,15 +48,16 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
-    ignoreDifferences:
-    - group: admissionregistration.k8s.io
-      kind: ValidatingWebhookConfiguration
-      jqPathExpressions:
-      - '.webhooks[]?.clientConfig.caBundle'
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-      jqPathExpressions:
-      - '.webhooks[]?.clientConfig.caBundle'
+      - ServerSideApply=true
     #automated:
     #  prune: true
     #  selfHeal: true
+  ignoreDifferences:
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    jqPathExpressions:
+    - '.webhooks[]?.clientConfig.caBundle'
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    jqPathExpressions:
+    - '.webhooks[]?.clientConfig.caBundle'
